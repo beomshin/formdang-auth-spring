@@ -10,7 +10,7 @@ env:
   S3_BUCKET_NAME: formdang-deploy-s3
   RESOURCE_PATH: ./src/main/resources/application.yaml
   CODE_DEPLOY_APPLICATION_NAME: formdang
-  CODE_DEPLOY_DEPLOYMENT_GROUP_NAME: formdang-auth
+  CODE_DEPLOY_DEPLOYMENT_GROUP_NAME: formdang-api
 
 jobs:
   build:
