@@ -37,7 +37,7 @@ jobs:
         run: mvn -Dmaven.test.skip=true -B package --file ./pom.xml
 
       - name: Make zip file
-        run: zip -r ./$GITHUB_SHA.zip ./target/*.jar ./appspec.yml ./deploy.sh ./web.conf
+        run: zip -r ./$GITHUB_SHA.zip ./target/*.jar ./appspec.yml ./deploy.sh
         shell: bash
 
       - name: Configure AWS credentials
