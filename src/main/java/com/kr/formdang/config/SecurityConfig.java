@@ -64,7 +64,7 @@ public class SecurityConfig {
                 .deleteCookies("refresh-token");
 
         http.authorizeHttpRequests()
-                .antMatchers("/api/public/**").permitAll()
+                .antMatchers("/auth/public/**").permitAll()
                 .anyRequest().hasRole("USER");
 
         http.addFilter(new LoginAuthenticationFilter(authenticationManager, loginSuccessHandler, loginFailHandler, "/api/public/login"));
