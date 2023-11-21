@@ -21,26 +21,21 @@ token:
   access-expired-time: 3600
   refresh-expired-time: 604800
 
-# LOCAL
----
-spring:
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://form-dang-database.cfsxwgisoif6.ap-northeast-2.rds.amazonaws.com/form_dang?useSSL=false&characterEncoding=UTF-8&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
-    username: test_formdang
-    password: formdang12!#
-  config:
-    activate:
-      on-profile: local
-
-# LOCAL
----
-spring:
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://form-dang-database.cfsxwgisoif6.ap-northeast-2.rds.amazonaws.com/form_dang?useSSL=false&characterEncoding=UTF-8&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
-    username: test_formdang
-    password: formdang12!#
-  config:
-    activate:
-      on-profile: test
+#LOG
+logging:
+  level:
+    root: info
+    jdbc.sqlonly: debug
+    jdbc.audit: debug
+    jdbc.resultset: debug
+    jdbc.connection: debug
+    http.logging: debug
+    org.springframework.test: warn
+    com.amazonaws.util.EC2MetadataUtils: error
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%-5level] [%thread] [%logger{0}:%line] [%X{request_id:-startup}] - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%-5level] [%thread] [%logger{0}:%line] [%X{request_id:-startup}] - %msg%n"
+  logback:
+    rolling policy:
+      max-history: 365
+      max-file-size: 100MB
