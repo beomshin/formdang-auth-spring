@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class HealthController {
 
 
-    @GetMapping("/api/public/health")
+    @GetMapping("/auth/public/health")
     public ResponseEntity health() {
         log.debug("[헬스체크 성공] ==============> ");
         return ResponseEntity.ok().build();
