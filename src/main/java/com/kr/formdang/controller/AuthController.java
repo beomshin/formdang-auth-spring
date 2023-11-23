@@ -56,7 +56,7 @@ public class AuthController {
     public ResponseEntity validate(HttpServletRequest request) {
         try {
             String jwtToken = jwtService.parseJwt(request);
-            if (jwtToken != null && jwtService.validateToken(jwtToken)) throw new CustomException(GlobalCode.FAIL_VALIDATE_TOKEN);
+            if (jwtToken == null || !jwtService.validateToken(jwtToken)) throw new CustomException(GlobalCode.FAIL_VALIDATE_TOKEN);
             return ResponseEntity.ok().body(new DefaultResponse());
         } catch (CustomException e) {
             log.error("[토큰 인증 에러] ===============> ", e);
