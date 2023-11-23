@@ -34,8 +34,9 @@ public class SecurityConfig {
 
 
         http.authorizeHttpRequests()
-                .antMatchers("/**").permitAll()
-                .anyRequest().hasRole("USER");
+//                .antMatchers("/**").permitAll()
+//                .anyRequest().hasRole("USER");
+                .anyRequest().permitAll();
 
 
 
