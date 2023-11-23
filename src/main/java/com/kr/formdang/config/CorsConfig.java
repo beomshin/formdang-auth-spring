@@ -29,7 +29,7 @@ public class CorsConfig {
     @Bean(name = "corsConfigurationSource")
     @Profile("prod")
     public CorsConfigurationSource corsConfigurationSource_prod() {
-        log.info("[운영 CORS] allowedOrigins : [https://lawgg.kr/*]");
+        log.info("[운영 CORS] allowedOrigins : [*]");
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.addAllowedOriginPattern("*");
         configuration.addAllowedHeader("*");

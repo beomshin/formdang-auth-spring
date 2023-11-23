@@ -1,4 +1,4 @@
-package com.kr.formdang.filters.common;
+package com.kr.formdang.filters;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -29,7 +29,7 @@ import java.util.Enumeration;
 
 @Slf4j
 @Order(Ordered.HIGHEST_PRECEDENCE + 1)
-@WebFilter(urlPatterns = "/api/*")
+@WebFilter(urlPatterns = "/*")
 public class DefaultHttpLoggingFilter extends OncePerRequestFilter {
   private final Gson gson = new GsonBuilder().create();
 

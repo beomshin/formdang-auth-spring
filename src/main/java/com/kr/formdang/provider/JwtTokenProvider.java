@@ -1,4 +1,4 @@
-package com.kr.formdang.provider.common;
+package com.kr.formdang.provider;
 
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
@@ -12,6 +12,7 @@ import java.util.List;
 public class JwtTokenProvider {
 
     public String createJwtToken(String key, Claims claims, String uri, Date expiration) {
+        log.debug("{}", key);
         return Jwts.builder()
                 .addClaims(claims)
                 .setExpiration(expiration)

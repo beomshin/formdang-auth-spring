@@ -1,4 +1,4 @@
-package com.kr.formdang.provider.common;
+package com.kr.formdang.provider;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseCookie;

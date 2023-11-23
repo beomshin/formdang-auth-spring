@@ -1,8 +1,7 @@
 package com.kr.formdang.jwt;
 
 
-import com.kr.formdang.crypto.KeyManager;
-import com.kr.formdang.provider.common.JwtTokenProvider;
+import com.kr.formdang.provider.JwtTokenProvider;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
@@ -28,43 +27,46 @@ public class JwtServiceImpl implements JwtService{
     @Value("${token.refresh-expired-time}")
     private long REFRESH_EXPIRED_TIME;
 
-    @Override
-    public String generateAccessToken(String subject, String uri, List<String> roles) {
-        Claims claims = Jwts.claims().setSubject(subject);
-        claims.put("roles", roles);
-        return jwtTokenProvider.createJwtToken(KeyManager.jwtKey, claims, uri, new Date(System.currentTimeMillis() + (ACCESS_EXPIRED_TIME * 1000)));
-    }
+    @Value("${token.jwt-key}")
+    public String JWT_KEY;
+
 
     @Override
-    public String generateRefreshToken(String subject, String uri, List<String> roles) {
-        Claims claims = Jwts.claims().setSubject(subject);
+    public String generateAccessToken(String uri, List<String> roles) {
+        Claims claims = Jwts.claims();
         claims.put("roles", roles);
-        return jwtTokenProvider.createJwtToken(KeyManager.jwtKey, claims, uri, new Date(System.currentTimeMillis() + (REFRESH_EXPIRED_TIME * 1000)));
+        return jwtTokenProvider.createJwtToken(JWT_KEY, claims, uri, new Date(System.currentTimeMillis() + (ACCESS_EXPIRED_TIME * 1000)));    }
+
+    @Override
+    public String generateRefreshToken( String uri, List<String> roles) {
+        Claims claims = Jwts.claims();
+        claims.put("roles", roles);
+        return jwtTokenProvider.createJwtToken(JWT_KEY, claims, uri, new Date(System.currentTimeMillis() + (REFRESH_EXPIRED_TIME * 1000)));
     }
 
     @Override
     public boolean validateToken(String token) {
-        return jwtTokenProvider.validateJwtToken(KeyManager.jwtKey, token);
+        return jwtTokenProvider.validateJwtToken(JWT_KEY, token);
     }
 
     @Override
     public Date getExpiredTime(String token) {
-        return jwtTokenProvider.getExpiredTime(KeyManager.jwtKey, token);
+        return jwtTokenProvider.getExpiredTime(JWT_KEY, token);
     }
 
     @Override
     public List<String> getRoles(String token) {
-        return jwtTokenProvider.getRoles(KeyManager.jwtKey, token);
+        return jwtTokenProvider.getRoles(JWT_KEY, token);
     }
 
     @Override
     public String getUserId(String token) {
-        return jwtTokenProvider.getSubject(KeyManager.jwtKey, token);
+        return jwtTokenProvider.getSubject(JWT_KEY, token);
     }
 
     @Override
     public String getType(String token) {
-        return jwtTokenProvider.getType(KeyManager.jwtKey, token);
+        return jwtTokenProvider.getType(JWT_KEY, token);
     }
 
     @Override

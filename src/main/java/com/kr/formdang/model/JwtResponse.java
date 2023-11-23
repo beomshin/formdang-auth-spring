@@ -10,7 +10,7 @@ import java.util.Date;
 @ToString(callSuper = true)
 @AllArgsConstructor
 @NoArgsConstructor
-public class LoginResponse extends DefaultResponse {
+public class JwtResponse extends DefaultResponse{
 
     private String accessToken;
     private String refreshToken;

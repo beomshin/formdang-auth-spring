@@ -1,4 +1,4 @@
-package com.kr.formdang.filters.common;
+package com.kr.formdang.filters;
 
 import org.slf4j.MDC;
 import org.springframework.core.Ordered;
@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.UUID;
 
 @Order(Ordered.HIGHEST_PRECEDENCE)
-@WebFilter(urlPatterns = "/api/*")
+@WebFilter(urlPatterns = "/*")
 public class DefaultMDCLoggingFilter extends OncePerRequestFilter {
 
     @Override
