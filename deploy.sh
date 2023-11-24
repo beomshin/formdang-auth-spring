@@ -36,6 +36,8 @@ fi
 
 cp /home/sp/source/auth/target/*.jar app.jar
 
+sleep 3
+
 # formdang-sp-was 서비스를 시작
 systemctl start formdang-sp-auth
 echo "formdang-sp-was 서비스를 시작했습니다."

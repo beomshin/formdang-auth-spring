@@ -2,11 +2,9 @@ package com.kr.formdang.controller;
 
 import com.kr.formdang.config.CustomException;
 import com.kr.formdang.jwt.JwtService;
-import com.kr.formdang.model.DefaultResponse;
-import com.kr.formdang.model.GlobalCode;
-import com.kr.formdang.model.JwtResponse;
-import com.kr.formdang.model.RefreshJwtResponse;
+import com.kr.formdang.model.*;
 import com.kr.formdang.provider.CookieProvider;
+import com.kr.formdang.repository.AuthRepository;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureException;
@@ -17,9 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -35,10 +31,14 @@ public class AuthController {
 
     private final JwtService jwtService;
     private final CookieProvider cookieProvider;
+    private final AuthRepository authRepository;
 
     @GetMapping("/issue")
-    public ResponseEntity issue() {
+    public ResponseEntity issue(@RequestBody JwtIssueRequest request) {
         try {
+            if (request.getAuth_key() == null) throw new CustomException(GlobalCode.NOT_EXIST_AUTH_KEY);
+            long exist = authRepository.countBySecret(request.getAuth_key());
+            if (exist == 0) throw new CustomException(GlobalCode.NOT_ALLOWED_ACCESS);
             Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
             authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
             List<String> roles = authorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
@@ -46,6 +46,8 @@ public class AuthController {
             Date expiredTime = jwtService.getExpiredTime(accessToken);
             String refreshToken = jwtService.generateRefreshToken("/issue", roles);
             return ResponseEntity.ok().body(new JwtResponse(accessToken, refreshToken, expiredTime));
+        } catch (CustomException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED.value()).body(new DefaultResponse(e.getCode()));
         } catch (Throwable e) {
             log.error("[토큰 생성 오류] =============> ", e);
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED.value()).body(new DefaultResponse(GlobalCode.FAIL_ISSUE_TOKEN));
@@ -74,8 +76,11 @@ public class AuthController {
     }
 
     @GetMapping("/reissue")
-    public ResponseEntity reissue(@CookieValue(value = "refresh-token") String refreshToken) {
+    public ResponseEntity reissue(@RequestBody JwtIssueRequest request, @CookieValue(value = "refresh-token") String refreshToken) {
         try {
+            if (request.getAuth_key() == null) throw new CustomException(GlobalCode.NOT_EXIST_AUTH_KEY);
+            long exist = authRepository.countBySecret(request.getAuth_key());
+            if (exist == 0) throw new CustomException(GlobalCode.NOT_ALLOWED_ACCESS);
             if (!jwtService.validateToken(refreshToken)) {
                 cookieProvider.removeRefreshTokenCookie();
                 throw new CustomException(GlobalCode.FAIL_VALIDATE_TOKEN);
@@ -86,7 +91,7 @@ public class AuthController {
             return ResponseEntity.ok().body(new RefreshJwtResponse(newAccessToken, expiredTime));
         } catch (CustomException e) {
             log.error("[토큰 인증 에러] ===============> ", e);
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED.value()).body(new DefaultResponse(GlobalCode.FAIL_VALIDATE_TOKEN));
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED.value()).body(new DefaultResponse(e.getCode()));
         } catch (Throwable e) {
             log.error("[리프레시 토큰 생성 오류] =============> ", e);
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED.value()).body(new DefaultResponse(GlobalCode.FAIL_ISSUE_TOKEN));
