@@ -2,7 +2,7 @@ server:
   port: 8091
   shutdown: graceful
   servlet:
-    context-path: /auth
+    context-path: /auth/sp
 
 spring:
   profiles:

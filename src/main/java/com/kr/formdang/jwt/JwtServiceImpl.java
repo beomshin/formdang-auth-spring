@@ -60,16 +60,6 @@ public class JwtServiceImpl implements JwtService{
     }
 
     @Override
-    public String getUserId(String token) {
-        return jwtTokenProvider.getSubject(JWT_KEY, token);
-    }
-
-    @Override
-    public String getType(String token) {
-        return jwtTokenProvider.getType(JWT_KEY, token);
-    }
-
-    @Override
     public String parseJwt(HttpServletRequest request) {
         String headerAuth = request.getHeader("Authorization");
         if (StringUtils.hasText(headerAuth) && headerAuth.startsWith("Bearer ")) {

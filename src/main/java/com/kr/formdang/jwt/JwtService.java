@@ -10,7 +10,5 @@ public interface JwtService {
     boolean validateToken(String token);
     Date getExpiredTime(String token);
     List<String> getRoles(String token);
-    String getUserId(String token);
-    String getType(String token);
     String parseJwt(HttpServletRequest request);
 }
