@@ -8,7 +8,7 @@ import lombok.Getter;
 @Getter
 public enum GlobalCode {
 
-    SUCCESS("00000", "성공"),
+    SUCCESS("0", "성공"),
     SYSTEM_ERROR("17000", "시스템 에러"),
     FAIL_GENERATE_TOKEN("17001", "토큰생성 실패"),
     FAIL_VALIDATE_TOKEN("17002", "토큰 인증 실패"),
