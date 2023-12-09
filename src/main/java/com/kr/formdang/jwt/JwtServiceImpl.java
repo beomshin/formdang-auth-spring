@@ -32,15 +32,17 @@ public class JwtServiceImpl implements JwtService{
 
 
     @Override
-    public String generateAccessToken(String uri, List<String> roles) {
+    public String generateAccessToken(String id, String uri, List<String> roles) {
         Claims claims = Jwts.claims();
         claims.put("roles", roles);
+        claims.put("id", id);
         return jwtTokenProvider.createJwtToken(JWT_KEY, claims, uri, new Date(System.currentTimeMillis() + (ACCESS_EXPIRED_TIME * 1000)));    }
 
     @Override
-    public String generateRefreshToken( String uri, List<String> roles) {
+    public String generateRefreshToken(String id, String uri, List<String> roles) {
         Claims claims = Jwts.claims();
         claims.put("roles", roles);
+        claims.put("id", id);
         return jwtTokenProvider.createJwtToken(JWT_KEY, claims, uri, new Date(System.currentTimeMillis() + (REFRESH_EXPIRED_TIME * 1000)));
     }
 

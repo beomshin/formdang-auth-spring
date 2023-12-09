@@ -33,7 +33,7 @@ public class AuthController {
     private final CookieProvider cookieProvider;
     private final AuthRepository authRepository;
 
-    @GetMapping("/issue")
+    @PostMapping("/issue")
     public ResponseEntity issue(@RequestBody JwtIssueRequest request) {
         try {
             if (request.getAuth_key() == null) throw new CustomException(GlobalCode.NOT_EXIST_AUTH_KEY);
@@ -42,9 +42,9 @@ public class AuthController {
             Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
             authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
             List<String> roles = authorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
-            String accessToken = jwtService.generateAccessToken("/issue", roles);
+            String accessToken = jwtService.generateAccessToken(request.getId(), "/issue", roles);
             Date expiredTime = jwtService.getExpiredTime(accessToken);
-            String refreshToken = jwtService.generateRefreshToken("/issue", roles);
+            String refreshToken = jwtService.generateRefreshToken(request.getId(),"/issue", roles);
             return ResponseEntity.ok().body(new JwtResponse(accessToken, refreshToken, expiredTime));
         } catch (CustomException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED.value()).body(new DefaultResponse(e.getCode()));
@@ -75,7 +75,7 @@ public class AuthController {
         }
     }
 
-    @GetMapping("/reissue")
+    @PostMapping("/reissue")
     public ResponseEntity reissue(@RequestBody JwtIssueRequest request, @CookieValue(value = "refresh-token") String refreshToken) {
         try {
             if (request.getAuth_key() == null) throw new CustomException(GlobalCode.NOT_EXIST_AUTH_KEY);
@@ -86,7 +86,7 @@ public class AuthController {
                 throw new CustomException(GlobalCode.FAIL_VALIDATE_TOKEN);
             }
 
-            String newAccessToken = jwtService.generateAccessToken("/reissue", jwtService.getRoles(refreshToken));
+            String newAccessToken = jwtService.generateAccessToken(request.getId(), "/reissue", jwtService.getRoles(refreshToken));
             Date expiredTime = jwtService.getExpiredTime(newAccessToken);
             return ResponseEntity.ok().body(new RefreshJwtResponse(newAccessToken, expiredTime));
         } catch (CustomException e) {

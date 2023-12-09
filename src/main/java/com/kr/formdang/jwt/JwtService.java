@@ -5,8 +5,8 @@ import java.util.Date;
 import java.util.List;
 
 public interface JwtService {
-    String generateAccessToken(String uri, List<String> roles);
-    String generateRefreshToken(String uri, List<String> roles);
+    String generateAccessToken(String id, String uri, List<String> roles);
+    String generateRefreshToken(String id, String uri, List<String> roles);
     boolean validateToken(String token);
     Date getExpiredTime(String token);
     List<String> getRoles(String token);

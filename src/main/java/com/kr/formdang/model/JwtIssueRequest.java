@@ -12,5 +12,6 @@ import javax.validation.constraints.NotBlank;
 public class JwtIssueRequest {
 
     private String auth_key;
+    private String id;
 
 }
