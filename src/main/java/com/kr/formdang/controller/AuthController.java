@@ -54,7 +54,7 @@ public class AuthController {
         }
     }
 
-    @GetMapping("/validate")
+    @RequestMapping(value = "/validate", method = {RequestMethod.GET, RequestMethod.POST})
     public ResponseEntity validate(HttpServletRequest request) {
         try {
             String jwtToken = jwtService.parseJwt(request);
