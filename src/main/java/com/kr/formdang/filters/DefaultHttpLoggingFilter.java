@@ -67,18 +67,18 @@ public class DefaultHttpLoggingFilter extends OncePerRequestFilter {
 
     printParameter(request); // 요청 파라미터 로깅
 
-    RequestBodyWrapper wrappedRequest = new RequestBodyWrapper(request);
-    ContentCachingResponseWrapper wrappedResponse = new ContentCachingResponseWrapper(response);
+//    RequestBodyWrapper wrappedRequest = new RequestBodyWrapper(request);
+//    ContentCachingResponseWrapper wrappedResponse = new ContentCachingResponseWrapper(response);
 
 //    printRequestBody(wrappedRequest); // 요청 body 로깅
 
     stopWatch.start(); // watch start
-    filterChain.doFilter(wrappedRequest, wrappedResponse); // 비지니스 로직
+    filterChain.doFilter(request, response); // 비지니스 로직
     stopWatch.stop(); // watch stop
 
     log.info("Returned status=[{}] in [{}]ms, charset=[{}]", response.getStatus(), stopWatch.getTotalTimeMillis(), response.getCharacterEncoding());
-    printResponseBody(wrappedResponse); // JSON 응답 로깅
-    wrappedResponse.copyBodyToResponse();
+//    printResponseBody(wrappedResponse); // JSON 응답 로깅
+//    wrappedResponse.copyBodyToResponse();
   }
 
   /**
