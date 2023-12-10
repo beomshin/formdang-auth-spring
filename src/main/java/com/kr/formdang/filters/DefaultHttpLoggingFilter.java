@@ -70,7 +70,7 @@ public class DefaultHttpLoggingFilter extends OncePerRequestFilter {
     RequestBodyWrapper wrappedRequest = new RequestBodyWrapper(request);
     ContentCachingResponseWrapper wrappedResponse = new ContentCachingResponseWrapper(response);
 
-    printRequestBody(wrappedRequest); // 요청 body 로깅
+//    printRequestBody(wrappedRequest); // 요청 body 로깅
 
     stopWatch.start(); // watch start
     filterChain.doFilter(wrappedRequest, wrappedResponse); // 비지니스 로직
