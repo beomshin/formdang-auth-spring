@@ -13,8 +13,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -39,12 +37,9 @@ public class AuthController {
             if (request.getAuth_key() == null) throw new CustomException(GlobalCode.NOT_EXIST_AUTH_KEY);
             long exist = authRepository.countBySecret(request.getAuth_key());
             if (exist == 0) throw new CustomException(GlobalCode.NOT_ALLOWED_ACCESS);
-            Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
-            authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
-            List<String> roles = authorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
-            String accessToken = jwtService.generateAccessToken(request.getId(), "/issue", roles);
+            String accessToken = jwtService.generateAccessToken(request.getId(), "/issue");
             Date expiredTime = jwtService.getExpiredTime(accessToken);
-            String refreshToken = jwtService.generateRefreshToken(request.getId(),"/issue", roles);
+            String refreshToken = jwtService.generateRefreshToken(request.getId(),"/issue");
             return ResponseEntity.ok().body(new JwtResponse(accessToken, refreshToken, expiredTime));
         } catch (CustomException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED.value()).body(new DefaultResponse(e.getCode()));
@@ -86,7 +81,7 @@ public class AuthController {
                 throw new CustomException(GlobalCode.FAIL_VALIDATE_TOKEN);
             }
 
-            String newAccessToken = jwtService.generateAccessToken(request.getId(), "/reissue", jwtService.getRoles(refreshToken));
+            String newAccessToken = jwtService.generateAccessToken(request.getId(), "/reissue");
             Date expiredTime = jwtService.getExpiredTime(newAccessToken);
             return ResponseEntity.ok().body(new RefreshJwtResponse(newAccessToken, expiredTime));
         } catch (CustomException e) {
