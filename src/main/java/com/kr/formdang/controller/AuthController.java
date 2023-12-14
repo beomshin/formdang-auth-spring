@@ -49,11 +49,11 @@ public class AuthController {
         }
     }
 
-    @CrossOrigin(origins = {"https://formdang.com/", "http://localhost:63342", "http://localhost"})
     @RequestMapping(value = "/validate", method = {RequestMethod.GET, RequestMethod.POST})
     public ResponseEntity validate(HttpServletRequest request) {
         try {
             String jwtToken = jwtService.parseJwt(request);
+            log.debug("token: {}", jwtToken);
             if (jwtToken == null || !jwtService.validateToken(jwtToken)) throw new CustomException(GlobalCode.FAIL_VALIDATE_TOKEN);
             return ResponseEntity.ok().body(new DefaultResponse());
         } catch (CustomException e) {
