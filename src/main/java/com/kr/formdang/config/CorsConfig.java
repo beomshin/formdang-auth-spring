@@ -8,6 +8,8 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.util.Arrays;
+
 @Configuration
 @Slf4j
 public class CorsConfig {
@@ -17,10 +19,11 @@ public class CorsConfig {
     public CorsConfigurationSource corsConfigurationSource_local() {
         log.info("[로컬 CORS] allowedOrigins : [*]");
         CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowCredentials(true);
         configuration.addAllowedOriginPattern("*");
         configuration.addAllowedHeader("*");
         configuration.addAllowedMethod("*");
-        configuration.setAllowCredentials(true);
+        configuration.setExposedHeaders(Arrays.asList("Authorization", "Authorization-refresh"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
@@ -35,6 +38,7 @@ public class CorsConfig {
         configuration.addAllowedHeader("*");
         configuration.addAllowedMethod("*");
         configuration.setAllowCredentials(true);
+        configuration.setExposedHeaders(Arrays.asList("Authorization", "Authorization-refresh"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
