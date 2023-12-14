@@ -14,10 +14,11 @@ import org.springframework.web.cors.CorsConfigurationSource;
 @EnableWebSecurity
 public class SecurityConfig {
 
+    private final CorsConfigurationSource corsConfigurationSource;
+
     @Bean
     public SecurityFilterChain securityFilterChain(
-            HttpSecurity http,
-            CorsConfigurationSource corsConfigurationSource
+            HttpSecurity http
     ) throws Exception {
 
         http.httpBasic().disable(); // REST API로 사용안함
@@ -33,13 +34,7 @@ public class SecurityConfig {
         http.cors().configurationSource(corsConfigurationSource);
 
 
-        http.authorizeHttpRequests()
-//                .antMatchers("/**").permitAll()
-//                .anyRequest().hasRole("USER");
-                .anyRequest().permitAll();
-
-
-
+        http.authorizeHttpRequests().anyRequest().permitAll();
         return http.build();
     }
 
