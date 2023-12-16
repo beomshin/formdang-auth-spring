@@ -42,10 +42,10 @@ public class AuthController {
             String refreshToken = jwtService.generateRefreshToken(request.getId(),"/issue");
             return ResponseEntity.ok().body(new JwtResponse(accessToken, refreshToken, expiredTime));
         } catch (CustomException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED.value()).body(new DefaultResponse(e.getCode()));
+            return ResponseEntity.ok().body(new DefaultResponse(e.getCode()));
         } catch (Throwable e) {
             log.error("[토큰 생성 오류] =============> ", e);
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED.value()).body(new DefaultResponse(GlobalCode.FAIL_ISSUE_TOKEN));
+            return ResponseEntity.ok().body(new DefaultResponse(GlobalCode.FAIL_ISSUE_TOKEN));
         }
     }
 
@@ -58,13 +58,13 @@ public class AuthController {
             return ResponseEntity.ok().body(new DefaultResponse());
         } catch (CustomException e) {
             log.error("[토큰 인증 에러] ===============> ", e);
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED.value()).body(new DefaultResponse(GlobalCode.FAIL_VALIDATE_TOKEN));
+            return ResponseEntity.ok().body(new DefaultResponse(GlobalCode.FAIL_VALIDATE_TOKEN));
         } catch (MalformedJwtException | UnsupportedJwtException | IllegalArgumentException | SignatureException e) {
             log.error("[토큰 생성 에러] ===============> ", e);
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED.value()).body(new DefaultResponse(GlobalCode.FAIL_GENERATE_TOKEN));
+            return ResponseEntity.ok().body(new DefaultResponse(GlobalCode.FAIL_GENERATE_TOKEN));
         } catch (ExpiredJwtException e) {
             log.error("[토큰 만료 에러] ===============> ", e);
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED.value()).body(new DefaultResponse(GlobalCode.EXPIRED_JWT_TOKEN));
+            return ResponseEntity.ok().body(new DefaultResponse(GlobalCode.EXPIRED_JWT_TOKEN));
         } catch (Throwable e) {
             log.error("[시스템 오류] =============> ", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR.value()).body(new DefaultResponse(GlobalCode.SYSTEM_ERROR));
@@ -87,10 +87,10 @@ public class AuthController {
             return ResponseEntity.ok().body(new RefreshJwtResponse(newAccessToken, expiredTime));
         } catch (CustomException e) {
             log.error("[토큰 인증 에러] ===============> ", e);
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED.value()).body(new DefaultResponse(e.getCode()));
+            return ResponseEntity.ok().body(new DefaultResponse(e.getCode()));
         } catch (Throwable e) {
             log.error("[리프레시 토큰 생성 오류] =============> ", e);
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED.value()).body(new DefaultResponse(GlobalCode.FAIL_ISSUE_TOKEN));
+            return ResponseEntity.ok().body(new DefaultResponse(GlobalCode.FAIL_ISSUE_TOKEN));
         }
     }
 
