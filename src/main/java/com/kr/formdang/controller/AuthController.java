@@ -67,7 +67,7 @@ public class AuthController {
             return ResponseEntity.ok().body(new DefaultResponse(GlobalCode.EXPIRED_JWT_TOKEN));
         } catch (Throwable e) {
             log.error("[시스템 오류] =============> ", e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR.value()).body(new DefaultResponse(GlobalCode.SYSTEM_ERROR));
+            return ResponseEntity.ok().body(new DefaultResponse(GlobalCode.SYSTEM_ERROR));
         }
     }
 
