@@ -49,6 +49,7 @@ public class AuthController {
         }
     }
 
+    @CrossOrigin
     @RequestMapping(value = "/validate", method = {RequestMethod.GET, RequestMethod.POST})
     public ResponseEntity validate(HttpServletRequest request) {
         try {
