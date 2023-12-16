@@ -58,7 +58,7 @@ public class AuthController {
             return ResponseEntity.ok().body(new DefaultResponse());
         } catch (CustomException e) {
             log.error("[토큰 인증 에러] ===============> ", e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR.value()).body(new DefaultResponse(GlobalCode.FAIL_VALIDATE_TOKEN));
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED.value()).body(new DefaultResponse(GlobalCode.FAIL_VALIDATE_TOKEN));
         } catch (MalformedJwtException | UnsupportedJwtException | IllegalArgumentException | SignatureException e) {
             log.error("[토큰 생성 에러] ===============> ", e);
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED.value()).body(new DefaultResponse(GlobalCode.FAIL_GENERATE_TOKEN));
