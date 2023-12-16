@@ -61,11 +61,6 @@ public class DefaultHttpLoggingFilter extends OncePerRequestFilter {
     stopWatch.stop(); // watch stop
 
     response.setHeader("Access-Control-Allow-Origin", "*");
-
-    for (String header : response.getHeaderNames()) {
-      log.info("[헤더] : {}", response.getHeader(header));
-    }
-
     log.info("Returned status=[{}] in [{}]ms, charset=[{}]", response.getStatus(), stopWatch.getTotalTimeMillis(), response.getCharacterEncoding());
   }
 
