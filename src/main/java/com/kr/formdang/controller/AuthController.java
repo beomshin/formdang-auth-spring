@@ -58,25 +58,16 @@ public class AuthController {
             return ResponseEntity.ok().body(new DefaultResponse());
         } catch (CustomException e) {
             log.error("[토큰 인증 에러] ===============> ", e);
-            return ResponseEntity
-                    .status(HttpStatus.UNAUTHORIZED)
-                    .header("Access-Control-Allow-Origin", "*")
-                    .body(new DefaultResponse(GlobalCode.FAIL_VALIDATE_TOKEN));
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new DefaultResponse(GlobalCode.FAIL_VALIDATE_TOKEN));
         } catch (MalformedJwtException | UnsupportedJwtException | IllegalArgumentException | SignatureException e) {
             log.error("[토큰 생성 에러] ===============> ", e);
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .header("Access-Control-Allow-Origin", "*")
-                    .body(new DefaultResponse(GlobalCode.FAIL_GENERATE_TOKEN));
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new DefaultResponse(GlobalCode.FAIL_GENERATE_TOKEN));
         } catch (ExpiredJwtException e) {
             log.error("[토큰 만료 에러] ===============> ", e);
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .header("Access-Control-Allow-Origin", "*")
-                    .body(new DefaultResponse(GlobalCode.EXPIRED_JWT_TOKEN));
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new DefaultResponse(GlobalCode.EXPIRED_JWT_TOKEN));
         } catch (Throwable e) {
             log.error("[시스템 오류] =============> ", e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .header("Access-Control-Allow-Origin", "*")
-                    .body(new DefaultResponse(GlobalCode.SYSTEM_ERROR));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new DefaultResponse(GlobalCode.SYSTEM_ERROR));
         }
     }
 
