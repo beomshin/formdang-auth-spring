@@ -10,7 +10,6 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
-import org.springframework.http.HttpStatus;
 import org.springframework.util.StopWatch;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.util.ContentCachingResponseWrapper;
@@ -32,7 +31,6 @@ import java.util.Enumeration;
 @Order(Ordered.HIGHEST_PRECEDENCE + 1)
 @WebFilter(urlPatterns = "/*")
 public class DefaultHttpLoggingFilter extends OncePerRequestFilter {
-  private final Gson gson = new GsonBuilder().create();
 
   /**
    * HTTP 로깅 필터
@@ -46,28 +44,34 @@ public class DefaultHttpLoggingFilter extends OncePerRequestFilter {
   @Override
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-    if (request.getMethod().equals("OPTIONS")) {
-      response.setStatus(HttpStatus.OK.value());
+    StopWatch stopWatch = new StopWatch();
+    String clientIp = request.getRemoteAddr();
+    String realClientIp = getRealClientIp(request);
+
+    if (StringUtils.equals(realClientIp, clientIp)) { // IP, 메소드, URL
+      log.info("Request: {} [{}] [{}]", realClientIp, request.getMethod(), request.getRequestURL());
     } else {
-      StopWatch stopWatch = new StopWatch();
-      String clientIp = request.getRemoteAddr();
-      String realClientIp = getRealClientIp(request);
-
-      if (StringUtils.equals(realClientIp, clientIp)) { // IP, 메소드, URL
-        log.info("Request: {} [{}] [{}]", realClientIp, request.getMethod(), request.getRequestURL());
-      } else {
-        log.info("Request: {} → {} [{}] [{}]", realClientIp, clientIp, request.getMethod(), request.getRequestURL());
-      }
-
-      stopWatch.start(); // watch start
-      filterChain.doFilter(request, response); // 비지니스 로직
-      stopWatch.stop(); // watch stop
-
-      log.info("Returned status=[{}] in [{}]ms, charset=[{}]", response.getStatus(), stopWatch.getTotalTimeMillis(), response.getCharacterEncoding());
+      log.info("Request: {} → {} [{}] [{}]", realClientIp, clientIp, request.getMethod(), request.getRequestURL());
     }
 
+    printHeader(request);
 
+    stopWatch.start(); // watch start
+    filterChain.doFilter(request, response); // 비지니스 로직
+    stopWatch.stop(); // watch stop
+
+    log.info("Returned status=[{}] in [{}]ms, charset=[{}]", response.getStatus(), stopWatch.getTotalTimeMillis(), response.getCharacterEncoding());
   }
+
+
+  private void printHeader(HttpServletRequest request) {
+    Enumeration<String> headerNames = request.getHeaderNames();
+    while (headerNames.hasMoreElements()) {
+      String name = headerNames.nextElement();
+      log.debug("header[{}] = {}", name, request.getHeader(name));
+    }
+  }
+
 
   /**
    * 웹서버를 타고 들어오는 경우 실제 클라이언트의 IP를 알아낸다.<br>
