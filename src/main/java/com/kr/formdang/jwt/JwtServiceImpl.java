@@ -1,6 +1,7 @@
 package com.kr.formdang.jwt;
 
 
+import com.kr.formdang.model.JwtIssueRequest;
 import com.kr.formdang.provider.JwtTokenProvider;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -32,15 +33,17 @@ public class JwtServiceImpl implements JwtService{
 
 
     @Override
-    public String generateAccessToken(String id, String uri) {
+    public String generateAccessToken(JwtIssueRequest request, String uri) {
         Claims claims = Jwts.claims();
-        claims.put("id", id);
+        claims.put("id", request.getId());
+        claims.put("name", request.getName());
         return jwtTokenProvider.createJwtToken(JWT_KEY, claims, uri, new Date(System.currentTimeMillis() + (ACCESS_EXPIRED_TIME * 1000)));    }
 
     @Override
-    public String generateRefreshToken(String id, String uri) {
+    public String generateRefreshToken(JwtIssueRequest request, String uri) {
         Claims claims = Jwts.claims();
-        claims.put("id", id);
+        claims.put("id", request.getId());
+        claims.put("name", request.getName());
         return jwtTokenProvider.createJwtToken(JWT_KEY, claims, uri, new Date(System.currentTimeMillis() + (REFRESH_EXPIRED_TIME * 1000)));
     }
 

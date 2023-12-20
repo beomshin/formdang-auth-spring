@@ -37,9 +37,9 @@ public class AuthController {
             if (request.getAuth_key() == null) throw new CustomException(GlobalCode.NOT_EXIST_AUTH_KEY);
             long exist = authRepository.countBySecret(request.getAuth_key());
             if (exist == 0) throw new CustomException(GlobalCode.NOT_ALLOWED_ACCESS);
-            String accessToken = jwtService.generateAccessToken(request.getId(), "/issue");
+            String accessToken = jwtService.generateAccessToken(request, "/issue");
             Date expiredTime = jwtService.getExpiredTime(accessToken);
-            String refreshToken = jwtService.generateRefreshToken(request.getId(),"/issue");
+            String refreshToken = jwtService.generateRefreshToken(request,"/issue");
             return ResponseEntity.ok().body(new JwtResponse(accessToken, refreshToken, expiredTime));
         } catch (CustomException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new DefaultResponse(e.getCode()));
@@ -82,7 +82,7 @@ public class AuthController {
                 throw new CustomException(GlobalCode.FAIL_VALIDATE_TOKEN);
             }
 
-            String newAccessToken = jwtService.generateAccessToken(request.getId(), "/reissue");
+            String newAccessToken = jwtService.generateAccessToken(request, "/reissue");
             Date expiredTime = jwtService.getExpiredTime(newAccessToken);
             return ResponseEntity.ok().body(new RefreshJwtResponse(newAccessToken, expiredTime));
         } catch (CustomException e) {
