@@ -12,7 +12,6 @@ import java.util.List;
 public class JwtTokenProvider {
 
     public String createJwtToken(String key, Claims claims, String uri, Date expiration) {
-        log.debug("{}", key);
         return Jwts.builder()
                 .addClaims(claims)
                 .setExpiration(expiration)

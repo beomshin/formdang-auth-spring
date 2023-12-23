@@ -54,7 +54,7 @@ public class DefaultHttpLoggingFilter extends OncePerRequestFilter {
       log.info("Request: {} → {} [{}] [{}]", realClientIp, clientIp, request.getMethod(), request.getRequestURL());
     }
 
-    printHeader(request);
+//    printHeader(request);
 
     stopWatch.start(); // watch start
     filterChain.doFilter(request, response); // 비지니스 로직
