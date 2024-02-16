@@ -16,5 +16,6 @@ public class JwtIssueRequest {
     private String auth_key;
     private String id;
     private String name;
+    private String profile;
 
 }

@@ -34,6 +34,7 @@ public class AuthController {
     @PostMapping("/issue")
     public ResponseEntity issue(@RequestBody JwtIssueRequest request) {
         try {
+            log.info("[요청값] {}", request);
             if (request.getAuth_key() == null) throw new CustomException(GlobalCode.NOT_EXIST_AUTH_KEY);
             long exist = authRepository.countBySecret(request.getAuth_key());
             if (exist == 0) throw new CustomException(GlobalCode.NOT_ALLOWED_ACCESS);

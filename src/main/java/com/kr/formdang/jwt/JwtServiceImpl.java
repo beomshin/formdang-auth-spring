@@ -37,6 +37,7 @@ public class JwtServiceImpl implements JwtService{
         Claims claims = Jwts.claims();
         claims.put("id", request.getId());
         claims.put("name", request.getName());
+        claims.put("profile", request.getProfile());
         return jwtTokenProvider.createJwtToken(JWT_KEY, claims, uri, new Date(System.currentTimeMillis() + (ACCESS_EXPIRED_TIME * 1000)));    }
 
     @Override
