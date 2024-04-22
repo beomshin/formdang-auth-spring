@@ -6,13 +6,17 @@ import org.springframework.stereotype.Component;
 
 import javax.servlet.http.Cookie;
 
-@Component
 public class CookieProvider {
 
-    @Value("${token.refresh-expired-time}")
-    private String refreshTokenExpiredTime;
+    private static String refreshTokenExpiredTime;
 
-    public ResponseCookie createRefreshTokenCookie(String refreshToken) {
+    public CookieProvider(
+            @Value("${token.refresh-expired-time}") String refresh_token_expired_time
+    ) {
+        refreshTokenExpiredTime = refresh_token_expired_time;
+    }
+
+    public static ResponseCookie createRefreshTokenCookie(String refreshToken) {
         return ResponseCookie.from("refresh-token", refreshToken)
                 .httpOnly(true)
                 .secure(true)
@@ -20,12 +24,12 @@ public class CookieProvider {
                 .maxAge(Long.parseLong((refreshTokenExpiredTime)) * 1000).build();
     }
 
-    public ResponseCookie removeRefreshTokenCookie() {
+    public static ResponseCookie removeRefreshTokenCookie() {
         return ResponseCookie.from("refresh-token", null)
                 .build();
     }
 
-    public Cookie of(ResponseCookie responseCookie) {
+    public static Cookie of(ResponseCookie responseCookie) {
         Cookie cookie = new Cookie(responseCookie.getName(), responseCookie.getValue());
         cookie.setPath(responseCookie.getPath());
         cookie.setSecure(responseCookie.isSecure());

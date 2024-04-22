@@ -6,7 +6,7 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public enum GlobalCode {
+public enum ResultCode {
 
     SUCCESS("0", "성공"),
     SYSTEM_ERROR("17000", "시스템 에러"),

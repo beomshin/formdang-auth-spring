@@ -10,14 +10,14 @@ public class DefaultResponse implements RootResponse {
 
     @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private final Date time = new Date(); // 날짜
-    public String resultCode = GlobalCode.SUCCESS.getCode();
-    public String resultMsg = GlobalCode.SUCCESS.getMsg();
+    public String resultCode = ResultCode.SUCCESS.getCode();
+    public String resultMsg = ResultCode.SUCCESS.getMsg();
     public Boolean success = true;
 
-    public DefaultResponse(GlobalCode code) {
+    public DefaultResponse(ResultCode code) {
         this.resultCode = code.getCode();
         this.resultMsg = code.getMsg();
-        if (!GlobalCode.SUCCESS.equals(code)) this.success = false;
+        if (!ResultCode.SUCCESS.equals(code)) this.success = false;
     }
 
 }
