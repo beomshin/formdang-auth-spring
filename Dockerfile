@@ -1,6 +1,6 @@
 FROM openjdk:8-alpine
 
-WORKDIR /app
+WORKDIR /
 
 ARG JAR_FILE_PATH=/target/*.jar
 ARG DATASOURCE_KEY
