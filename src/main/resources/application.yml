@@ -2,7 +2,7 @@ server:
   port: 22081
   shutdown: graceful
   servlet:
-    context-path: /formdang-auth-spring
+    context-path: /formdang-spring-auth
 
 spring:
   profiles:
