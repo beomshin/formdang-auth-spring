@@ -1,11 +1,12 @@
 version: '3'
 
 services:
-  formdang-sp-auth:
+  formdang-spring-auth:
     image: ${DOCKER_IMAGE_NAME}
     container_name: ${DOCKER_CONTAINER_NAME}
     ports:
       - "${PORT}:${PORT}"
+      - "35020:35020"
     networks:
       - formdang-network
     volumes:
@@ -16,6 +17,8 @@ services:
 
 networks:
   formdang-network:
+    external: true
+  zabbix-net:
     external: true
 
 volumes:
