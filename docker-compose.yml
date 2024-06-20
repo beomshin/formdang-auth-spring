@@ -9,6 +9,7 @@ services:
       - "35020:35020"
     networks:
       - formdang-network
+      - zabbix-net
     volumes:
       -  logs:/logs
     environment:
