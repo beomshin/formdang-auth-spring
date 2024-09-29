@@ -11,11 +11,11 @@
     </parent>
 
     <groupId>com.kr.formdang</groupId>
-    <artifactId>formdang-sp-auth</artifactId>
+    <artifactId>formdang-auth-spring</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 
-    <name>formdang-sp-auth</name>
-    <description>formdang-sp-auth</description>
+    <name>formdang-auth-spring</name>
+    <description>formdang-auth-spring</description>
 
     <properties>
         <java.version>1.8</java.version>
@@ -106,6 +106,13 @@
             <groupId>com.github.ulisesbocchio</groupId>
             <artifactId>jasypt-spring-boot-starter</artifactId>
             <version>3.0.4</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-config -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-config</artifactId>
+            <version>3.1.1</version>
         </dependency>
 
     </dependencies>

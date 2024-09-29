@@ -1,16 +1,14 @@
 server:
   port: 22081
-  shutdown: graceful
-  servlet:
-    context-path: /formdang-spring-auth
 
 spring:
+  application:
+    name: formdang-auth
+  config:
+#    import: optional:configserver:http://spring-cloud-config:8888/ # spring cloud config 정보 조회 (서버 종료 option 처리)
+    import: optional:configserver:http://192.168.0.3:8888/ # spring cloud config 정보 조회 (서버 종료 option 처리)
   profiles:
     active: local
-    include: # 다른 모듈 yml 사용을 위해 적용
-      - common # common-web
-      - dao # core-web
-      - core # domain-core
     group: # active 레벨에 따른 로깅 레벨 설정
       local:
         - console-logging # 콘솔 로깅만 사용
@@ -20,8 +18,6 @@ spring:
       prod:
         - console-logging
         - file-logging # 파일 로깅 사용
-  application:
-    name: web-auth
   jackson:
     time-zone: Asia/Seoul
   web:
@@ -31,8 +27,3 @@ spring:
     multipart:
       max-file-size: 30MB
       max-request-size:  30MB
-
-token:
-  access-expired-time: 21600
-  refresh-expired-time: 604800
-  jwt-key: ENC(Qv0AW2gMig62bU/urGba3YWCUh8n++QMLS0XHjXVl1VbNbJLJZZABJ5sgzsG5yx0IG82g8KMXC+kRFwWcI5FKb6gF+SOMN3AdMYu1EF57r0=)
