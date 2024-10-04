@@ -27,24 +27,24 @@ public class WebConfig implements WebMvcConfigurer {
                 .maxAge(3600);
     }
 
-//    @Override
-//    public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
-//        // XML 관련 HttpMessageConverter 의 우선순위를 최하위로 낮추는 메소드
-//        reorderXmlConvertersToEnd(converters);
-//    }
-//
-//    private void reorderXmlConvertersToEnd(List<HttpMessageConverter<?>> converters) {
-//        List<HttpMessageConverter<?>> xml = new ArrayList<>();
-//        for (Iterator<HttpMessageConverter<?>> iterator =
-//             converters.iterator(); iterator.hasNext();) {
-//            HttpMessageConverter<?> converter = iterator.next();
-//            if ((converter instanceof AbstractXmlHttpMessageConverter)
-//                    || (converter instanceof MappingJackson2XmlHttpMessageConverter)) {
-//                xml.add(converter);
-//                iterator.remove();
-//            }
-//        }
-//        converters.addAll(xml);
-//    }
+    @Override
+    public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
+        // XML 관련 HttpMessageConverter 의 우선순위를 최하위로 낮추는 메소드
+        reorderXmlConvertersToEnd(converters);
+    }
+
+    private void reorderXmlConvertersToEnd(List<HttpMessageConverter<?>> converters) {
+        List<HttpMessageConverter<?>> xml = new ArrayList<>();
+        for (Iterator<HttpMessageConverter<?>> iterator =
+             converters.iterator(); iterator.hasNext();) {
+            HttpMessageConverter<?> converter = iterator.next();
+            if ((converter instanceof AbstractXmlHttpMessageConverter)
+                    || (converter instanceof MappingJackson2XmlHttpMessageConverter)) {
+                xml.add(converter);
+                iterator.remove();
+            }
+        }
+        converters.addAll(xml);
+    }
 
 }
